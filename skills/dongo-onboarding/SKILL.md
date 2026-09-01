@@ -4,7 +4,7 @@ description: Install, connect, diagnose, or repair Dongo for a repository and co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # Dongo onboarding
@@ -13,8 +13,8 @@ Bring the current repository from any starting state to a healthy Dongo CLI and
 MCP connection. Perform the setup work yourself. Ask the user only for browser
 approval or for a host-level permission that the environment requires.
 
-This setup requires internet access. The installed CLI needs Node.js 20 or newer;
-building its current source fallback needs Git, npm, and Node.js 24.
+This setup requires internet access, npm, and Node.js 20 or newer. Building the
+trusted source fallback additionally needs Git and Node.js 24.
 
 ## Preserve authorization boundaries
 

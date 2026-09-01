@@ -3,6 +3,10 @@
 Portable [Agent Skills](https://agentskills.io/) for setting up and operating
 [Dongo](https://dongo.so) from an AI coding agent.
 
+The onboarding skill installs the public
+[`@wisepunk/dongo`](https://www.npmjs.com/package/@wisepunk/dongo) CLI package
+when the `dongo` executable is not already available.
+
 ## Included skills
 
 - `dongo-onboarding` installs the Dongo CLI when needed, connects a repository,

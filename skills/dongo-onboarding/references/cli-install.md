@@ -8,21 +8,27 @@ or newer. Building the current source checkout uses Node.js 24.
 If `dongo --version` succeeds, keep it and continue with `dongo auth status` and
 `dongo doctor`.
 
-## Package registry
+## Published package
 
-Check whether `@dongo/cli` is publicly available:
-
-```sh
-npm view @dongo/cli version
-```
-
-If available, install it using the environment's normal global npm mechanism:
+Install the public Dongo package from the npm registry:
 
 ```sh
-npm install --global @dongo/cli
+npm install --global @wisepunk/dongo
+dongo --version
 ```
 
-Confirm with `dongo --version`.
+The package requires Node.js 20 or newer and provides the `dongo` executable. Do
+not substitute a similarly named package.
+
+If npm reports that the package is temporarily unavailable, confirm the exact
+package name once:
+
+```sh
+npm view @wisepunk/dongo version
+```
+
+Do not repeatedly retry a registry error. Use the trusted source fallback when
+the environment has its prerequisites.
 
 ## Public source fallback
 
@@ -34,8 +40,8 @@ From the clone root:
 
 ```sh
 npm ci
-npm pack --workspace @dongo/cli
-npm install --global ./dongo-cli-0.1.0.tgz
+npm pack --workspace @wisepunk/dongo
+npm install --global ./<tarball-emitted-by-npm-pack>
 dongo --version
 ```
 
