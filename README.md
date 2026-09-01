@@ -1,7 +1,7 @@
-# Dongo Agent Skills
+# dongo Agent Skills
 
 Portable [Agent Skills](https://agentskills.io/) for setting up and operating
-[Dongo](https://dongo.so) from an AI coding agent.
+[dongo](https://dongo.so) from an AI coding agent.
 
 The onboarding skill installs the public
 [`@wisepunk/dongo`](https://www.npmjs.com/package/@wisepunk/dongo) CLI package
@@ -9,10 +9,13 @@ when the `dongo` executable is not already available.
 
 ## Included skills
 
-- `dongo-onboarding` installs the Dongo CLI when needed, connects a repository,
-  configures the current agent's MCP host, and guides the browser approval.
+- `dongo-onboarding` installs the dongo CLI when needed, connects a repository,
+  previews and applies managed `AGENTS.md` or `CLAUDE.md` guidance, configures
+  the current agent's MCP host, and guides the browser approval.
 - `dongo-workflow` teaches an agent how to triage Intake, claim and complete Work,
-  handle Attention, and respect Dongo's concurrency and security rules.
+  handle Attention, keep repository work attached to active Runs, and respect
+  dongo's concurrency and security rules, including bounded Attention and new
+  Intake waits.
 
 Install both skill directories with your agent's normal Agent Skills installer.
 For example, ask your agent:
@@ -22,12 +25,19 @@ For example, ask your agent:
 
 After installation, say:
 
-> Set up Dongo for this repository.
+> Set up dongo for this repository.
 
-The agent handles the CLI and MCP configuration. You approve the Dongo project
+The agent handles the CLI and MCP configuration. You approve the dongo project
 and the agent installation in the browser when prompted. A newly configured MCP
 connection may require restarting the agent host if it cannot reload MCP servers
 in the current session.
+
+Connecting another repository does not require signing out of a healthy dongo
+account. The agent creates a separate repository binding and lets the browser
+reuse the current account session. MCP remains an optional, separately approved
+project connection. On the free plan, a second active project requires choosing
+whether to upgrade, archive an existing project, or bind another checkout to the
+correct existing project.
 
 ## Repository layout
 
@@ -43,6 +53,20 @@ skills/
 
 Each folder follows the open Agent Skills specification and can be installed
 independently.
+
+## Validation
+
+Before publishing skill changes, validate each changed skill with the Agent
+Skills validator and run:
+
+```sh
+node scripts/verify-brand-case.mjs
+```
+
+The brand check includes prose, headings, examples, inline code, and fenced code
+blocks. It preserves exact legacy identifiers such as `DONGO-12`, environment
+variables such as `DONGO_TOKEN`, and required managed filenames such as
+`DONGO.managed.md`.
 
 ## License
 

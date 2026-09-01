@@ -1,7 +1,15 @@
 # MCP host setup
 
 The CLI-generated integration is authoritative for project names and URLs. Use
-the commands below only with values rendered from trusted local Dongo state.
+the commands below only with values rendered from trusted local dongo state.
+Each connection is optional and project-scoped. A valid browser account session
+may approve it without repeating account login, but the MCP host still receives
+its own grant and never reuses the repository's CLI credential.
+
+MCP connectivity alone does not prove parallel execution or worktree isolation.
+Report each capability from tested behavior of the current host/runtime. Use
+`unsupported` for a known missing capability and leave an uncertain capability
+undisclosed. All hosts remain supported for serial dongo work.
 
 ## Codex
 
@@ -20,7 +28,7 @@ codex mcp login dongo-<short-project-ref> --scopes dongo:work:read,dongo:work:wr
 ```
 
 Codex owns and refreshes this OAuth grant. Never configure
-`bearer_token_env_var` for Dongo.
+`bearer_token_env_var` for dongo.
 
 ## Claude Code
 
@@ -49,7 +57,7 @@ Preview the generic rendering:
 dongo integrate generic
 ```
 
-Merge only the generated Dongo server entry through the host's documented
+Merge only the generated dongo server entry through the host's documented
 configuration mechanism. The connection contains the project-specific
 Streamable HTTP URL and no static authorization header.
 
@@ -60,6 +68,6 @@ advertised and Dynamic Client Registration only as a compatibility fallback.
 
 ## Removal and revocation
 
-Logging out the host, removing its local MCP entry, and revoking the Dongo
+Logging out the host, removing its local MCP entry, and revoking the dongo
 installation are distinct operations. Perform only the operation the user asks
 for. Revocation is required when server-side invalidation is intended.

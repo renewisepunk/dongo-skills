@@ -1,6 +1,6 @@
 # CLI installation
 
-Use the least invasive working route. The packed Dongo CLI requires Node.js 20
+Use the least invasive working route. The packed dongo CLI requires Node.js 20
 or newer. Building the current source checkout uses Node.js 24.
 
 ## Existing installation
@@ -10,7 +10,7 @@ If `dongo --version` succeeds, keep it and continue with `dongo auth status` and
 
 ## Published package
 
-Install the public Dongo package from the npm registry:
+Install the public dongo package from the npm registry:
 
 ```sh
 npm install --global @wisepunk/dongo
@@ -19,6 +19,19 @@ dongo --version
 
 The package requires Node.js 20 or newer and provides the `dongo` executable. Do
 not substitute a similarly named package.
+
+During the package's initial release window, npm or an agent package-safety
+layer may warn that `@wisepunk/dongo` is newly published. Treat package age as a
+risk signal rather than proof of a bad package. Verify the exact scoped name,
+published repository, version, and integrity metadata before continuing:
+
+```sh
+npm view @wisepunk/dongo name version repository dist.integrity
+```
+
+If the host requires explicit approval for a new package, surface the warning
+and use the user's approval. Never substitute an unscoped or similarly named
+package, add `--force`, or disable a security policy to bypass the warning.
 
 If npm reports that the package is temporarily unavailable, confirm the exact
 package name once:
