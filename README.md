@@ -14,8 +14,9 @@ when the `dongo` executable is not already available.
   the current agent's MCP host, and guides the browser approval.
 - `dongo-workflow` teaches an agent how to triage Intake, claim and complete Work,
   handle Attention, keep repository work attached to active Runs, and respect
-  dongo's concurrency and security rules, including bounded Attention and new
-  Intake waits.
+  dongo's concurrency and security rules, including the complete issue
+  lifecycle, bounded Attention and new Intake waits, and safe host-native
+  delegation for an owner-authorized batch of independent issues.
 
 Install both skill directories with your agent's normal Agent Skills installer.
 For example, ask your agent:

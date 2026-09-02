@@ -21,6 +21,29 @@ Do not infer support from the host name, MCP availability, an installation
 record, generic CLI activity, or another machine's behavior. Unsupported and
 undisclosed hosts remain valid serial clients.
 
+## Coordinate an authorized batch
+
+When a user explicitly asks to process multiple independent Intake or Work
+items, do not apply the one-active-WorkItem rule to the whole effort. If session
+start returns parallel mode, use the host's native subagent or task delegation
+to create distinct sessions and isolated worktrees up to the smaller of:
+
+- remaining project Run capacity;
+- the number of eligible independent issues; and
+- available host agent slots.
+
+Delegate each unclaimed Intake before its claim, or each Ready WorkItem before
+its start. Give every delegated session the exact item identifier and enough
+trusted repository context to inspect duplicates safely. Require that session
+to start dongo independently with a unique stable external session ID, own only
+that item, and report its workspace and Run truthfully. Never share one claimed
+Intake or active Run between sessions.
+
+Continue useful coordinator work while delegated sessions run. As a session
+finishes, use the newly available capacity for the next authorized eligible
+item. Wait for all delegated results, reconcile commits and outcomes, and keep
+every WorkItem truthful; dispatching an agent is not completion.
+
 ## Admit a parallel start
 
 Before starting an additional WorkItem:

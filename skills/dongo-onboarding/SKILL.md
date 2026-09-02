@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.9"
+  version: "0.1.10"
 ---
 
 # dongo onboarding
@@ -123,8 +123,11 @@ the repository connection failed merely because optional MCP setup is pending.
    implementation and verification. It must also state that a stopped agent
    cannot wake itself and that active Attention polling uses the bounded
    5/10/20/30-second schedule for at most five minutes. It must also preserve
-   one active WorkItem per session and require truthful host capability and
-   isolated-workspace reporting before parallel starts. It must keep the
+   one active WorkItem per session, identify that rule as per-session rather
+   than project-wide serialization, direct a capable coordinating host to use
+   distinct delegated sessions for an authorized independent batch, and require
+   truthful host capability and isolated-workspace reporting before parallel
+   starts. It must keep the
    human-only Ideas backlog outside agent reads, claims, attachments, and sync;
    only promoted Intake enters the agent workflow.
 5. Start the host's MCP login flow and let the user approve that separate agent
@@ -145,7 +148,11 @@ explicitly requests it. Single-agent is the safe default. Explain that the
 owner-configured 2–8 concurrent-Run value is a safety cap rather than a plan
 limit, and that dongo coordinates atomic claims while the host creates agents
 and isolated worktrees. Unsupported or undisclosed hosts remain fully usable
-for serial work.
+for serial work. When parallel execution is already enabled and the host is
+capable, explain that one active WorkItem applies per external session: an
+explicit request to process multiple independent issues should use distinct
+delegated sessions and isolated worktrees up to available project and host
+capacity, refilling capacity as sessions finish.
 
 When the verified MCP host will remain active for new Intake, establish its
 retained-signal drain from version 0 with one `dongo_get_updates` call that
