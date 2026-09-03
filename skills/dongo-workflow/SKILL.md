@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "check dongo", "pro
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.9"
+  version: "0.1.10"
 ---
 
 # dongo workflow
@@ -28,7 +28,8 @@ validated preview with `--apply` as part of the same authorized setup.
 Verify that the resulting `AGENTS.md` or `CLAUDE.md` managed block requires
 agents to use dongo for planning and tracking, inspect existing Intake and Work,
 attach repository changes to an active Run, record progress, blockers, and
-outcomes, and finish only after implementation and relevant verification.
+outcomes, and require verified integration into the intended shared target
+before Done, plus release acceptance when required by the user or repository.
 Preserve unrelated repository instructions and stop on a managed-marker or
 configuration ownership conflict.
 
@@ -64,7 +65,9 @@ For every authorized issue, keep the dongo record and repository state aligned:
    workspace and start its active Run before editing files.
 4. Implement while renewing the lease, recording meaningful updates, and using
    Attention for decisions that need the owner.
-5. Verify the result, record relevant artifacts, and finish Work truthfully.
+5. Verify the result and integration into the intended shared target branch,
+   complete any required release acceptance, record exact revision/evidence,
+   and only then finish Work. A local commit or coordinator handoff is not Done.
 
 Do not leave claimed Intake, Ready Work, or an active Run merely because the
 local conversation moved on.
@@ -243,4 +246,14 @@ unrelated repository changes.
 Record meaningful updates while a Run is active, including concrete progress or
 blockers. Request Attention when human judgment is genuinely required. Finish
 Work only after the requested outcome is complete, with concise outcome text and
-only relevant artifacts. Do not mark work done because time or context is short.
+only relevant artifacts. For repository implementation, this includes a verified
+merge/integration into the intended shared target and any required live release
+acceptance. A local commit, passing test, pushed feature branch, PR, or
+coordinator handoff is not Done. Respect explicit draft/local-only and
+non-repository scope without claiming a release. The host verifies Git; the
+remote service cannot do so independently.
+
+Read [references/completion.md](references/completion.md) before finishing
+repository Work or handing it to a coordinator. Use its deterministic local
+Git helper, source-to-integration evidence, and lease-safe pending handoff.
+Do not mark work done because time, context, or concurrency capacity is short.

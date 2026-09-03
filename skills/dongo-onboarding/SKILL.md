@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.10"
+  version: "0.1.11"
 ---
 
 # dongo onboarding
@@ -120,7 +120,11 @@ the repository connection failed merely because optional MCP setup is pending.
 4. Read back the managed block and verify that it requires agents to plan and
    track work in dongo, inspect existing Intake and Work, attach changes to an
    active Run, record progress/blockers/outcomes, and finish only after
-   implementation and verification. It must also state that a stopped agent
+   verified integration into the intended shared target and required release
+   acceptance. A local commit, passing test, feature-branch push, PR, or
+   coordinator handoff must not be described as Done. Git and release evidence
+   are checked by the host, not independently by remote dongo. Explicit
+   draft/local-only scope remains limited. It must also state that a stopped agent
    cannot wake itself and that active Attention polling uses the bounded
    5/10/20/30-second schedule for at most five minutes. It must also preserve
    one active WorkItem per session, identify that rule as per-session rather

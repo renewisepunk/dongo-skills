@@ -44,6 +44,15 @@ finishes, use the newly available capacity for the next authorized eligible
 item. Wait for all delegated results, reconcile commits and outcomes, and keep
 every WorkItem truthful; dispatching an agent is not completion.
 
+Reserve coordinator capacity when the batch needs integration/release work.
+An implementer reporting a tested local commit has not completed its WorkItem.
+Follow [completion.md](completion.md): keep the owning session/lease active and
+Work unfinished until the coordinator provides exact shared-target integration
+and required release acceptance evidence. Do not finish merely to refill a slot.
+The coordinator owns its separate Run; it never shares an implementer's Run.
+If a host must stop, persist a concrete pending handoff and recover ownership
+through refetch/reclaim on the next session, not through invented completion.
+
 ## Admit a parallel start
 
 Before starting an additional WorkItem:

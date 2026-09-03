@@ -87,8 +87,11 @@ that process is still running.
    policy, session ownership, and workspace isolation allow.
 3. Perform changes through the active Run and renew its lease during long work.
 4. Add meaningful status updates without flooding the conversation.
-5. Finish with a truthful outcome and relevant commit, pull request, deployment,
-   URL, image, file, or report artifacts.
+5. Before finishing repository Work, follow [completion.md](completion.md):
+   prove integration into the intended shared target using fresh remote state,
+   and any required release acceptance. Record exact integrated revision and
+   meaningful evidence, not merely a local commit or PR. Keep incomplete
+   integration/release on the same Work with a lease-safe handoff.
 
 CLI families: `dongo work get|start|update|renew|finish`.
 
