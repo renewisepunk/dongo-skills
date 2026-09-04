@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.11"
+  version: "0.1.12"
 ---
 
 # dongo onboarding
@@ -37,6 +37,16 @@ trusted source fallback additionally needs Git and Node.js 24.
 
 Work from the repository root.
 
+Treat discovery as a required, read-only phase. Complete it before running
+`npm install`, `dongo connect`, a host login command, or an integration apply.
+Read [references/setup-phases.md](references/setup-phases.md) and maintain its
+phase ledger throughout setup. For every phase, record one of `checking`,
+`verified`, `not required`, `waiting`, `recovering`, or `failed`, the bounded
+evidence that justifies it, and the next action when one exists. Update the
+visible task/progress label as soon as the current phase changes. Never leave a
+completed action such as “Downloading latest dongo CLI” visible while checking
+another phase.
+
 1. Read [references/account-and-projects.md](references/account-and-projects.md)
    and keep browser account state, repository binding, and MCP authorization
    separate throughout setup.
@@ -54,10 +64,28 @@ Work from the repository root.
 5. If the CLI exists, run `dongo auth status` and run `dongo doctor` only when
    this repository has a binding. Do not expose credential-bearing output.
 
+Do not collapse these observations into one “connected” result. Independently
+classify CLI installation/version, CLI authorization, repository binding,
+repository diagnostics, host integration, host authorization, runner
+registration, Inbox pickup, external GitHub or deployment capabilities,
+browser review, and actual Work dispatch. A later missing capability must not
+send an earlier verified phase back to authentication.
+
+Reconcile uncertain or stale state before mutating it. If a background command
+may have completed, or setup resumes after a restart, repeat the relevant
+read-only check and continue from the first unverified phase. Do not launch a
+second connect/login attempt merely because the first process disappeared or a
+task label is stale.
+
 ## Install the CLI when absent
 
 Read [references/cli-install.md](references/cli-install.md) and use the first
 applicable installation path. Do not reinstall a healthy CLI.
+
+If `dongo --version` already reports the required stable version, mark CLI
+installation and version `verified`, say that dongo is already installed, and
+move the visible progress label to the next phase. Do not narrate or display a
+download or update phase that did not run.
 
 ## Connect the repository
 
@@ -95,6 +123,12 @@ account session, and approve a new project-scoped CLI installation.
   project-scoped and is not an account, repository, or host identifier.
 
 After approval, run `dongo doctor`. Resolve actionable failures before moving on.
+
+Treat browser approval as `waiting`, not `failed`, while the original bounded
+attempt remains pending. On timeout, cancellation, or restart, inspect
+`dongo auth status`, the trusted marker, and `dongo doctor` before deciding to
+retry. If those checks are healthy, classify the old attempt as superseded and
+continue without opening another approval flow.
 
 ## Configure the MCP host when needed
 
@@ -146,6 +180,19 @@ session ID. A successful startup response is the definitive connection check.
 Report which repository/project was connected and whether a host restart remains.
 Confirm that the managed repository instructions were applied. Do not start
 Ready work during onboarding.
+
+Report setup readiness narrowly: CLI ready, repository ready, and host ready are
+separate claims. Runner registration, Inbox pickup, browser review, GitHub or
+deployment access, and Work dispatch are post-setup capabilities unless the
+user explicitly requested them as part of the same task. Verify each requested
+capability independently. Name the exact failed layer and its next action; do
+not describe a GitHub, Cloudflare, browser, runner, Inbox, or scheduler failure
+as “authenticate dongo.”
+
+End with the phase ledger from `references/setup-phases.md`. It must identify
+what was proved, what was not required, what remains, and which action will
+occur next. “Setup complete” is truthful only when every capability promised in
+the current request is `verified` or `not required`.
 
 Do not enable project parallel execution during onboarding unless the owner
 explicitly requests it. Single-agent is the safe default. Explain that the
