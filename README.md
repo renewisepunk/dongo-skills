@@ -11,7 +11,9 @@ when the `dongo` executable is not already available.
 
 - `dongo-onboarding` installs the dongo CLI when needed, connects a repository,
   previews and applies managed `AGENTS.md` or `CLAUDE.md` guidance, configures
-  the current agent's MCP host, and guides the browser approval.
+  the current agent's MCP host, and guides browser approval. It starts with
+  read-only discovery, reports each setup/capability phase separately, and
+  never starts authentication merely because a later phase is missing.
 - `dongo-workflow` teaches an agent how to triage Intake, claim and complete Work,
   handle Attention, keep repository work attached to active Runs, and respect
   dongo's concurrency and security rules, including the complete issue
