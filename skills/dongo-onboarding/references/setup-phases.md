@@ -42,7 +42,7 @@ Keep one current phase and change it immediately when evidence changes. Prefer
 short labels such as:
 
 - `Checking existing dongo setup`
-- `dongo CLI 0.2.11 already installed`
+- `dongo CLI already installed · <reported version>`
 - `Waiting for repository approval`
 - `Repository connected; checking Claude Code integration`
 - `Host restart required to load dongo`

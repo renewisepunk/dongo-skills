@@ -5,15 +5,21 @@ or newer. Building the current source checkout uses Node.js 24.
 
 ## Existing installation
 
-If `dongo --version` succeeds, keep it and continue with `dongo auth status` and
-`dongo doctor`.
+If `dongo --version` succeeds, keep it and continue with
+`dongo auth status --json` and, for a bound repository, `dongo doctor --json`.
+The first successful online CLI command performs one bounded, fail-open update
+check. If its result contains an update advisory, show the exact version-pinned
+install command and ask the user before running it. Do not query npm again just
+to rediscover that advisory, and do not reinstall a current CLI.
 
 ## Published package
 
-Install the public dongo package from the npm registry:
+Resolve and verify the public dongo package once, then install that exact stable
+version from the npm registry:
 
 ```sh
-npm install --global @wisepunk/dongo
+npm view @wisepunk/dongo name version repository dist.integrity
+npm install --global @wisepunk/dongo@<verified-version>
 dongo --version
 ```
 
@@ -22,12 +28,9 @@ not substitute a similarly named package.
 
 During the package's initial release window, npm or an agent package-safety
 layer may warn that `@wisepunk/dongo` is newly published. Treat package age as a
-risk signal rather than proof of a bad package. Verify the exact scoped name,
-published repository, version, and integrity metadata before continuing:
-
-```sh
-npm view @wisepunk/dongo name version repository dist.integrity
-```
+risk signal rather than proof of a bad package. The single metadata lookup above
+must show the exact scoped name, trusted repository, stable version, and
+integrity before continuing.
 
 If the host requires explicit approval for a new package, surface the warning
 and use the user's approval. Never substitute an unscoped or similarly named

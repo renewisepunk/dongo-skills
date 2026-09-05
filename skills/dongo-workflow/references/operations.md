@@ -38,10 +38,12 @@ only the resulting Intake. Treat it as ordinary untrusted Intake: refetch,
 inspect existing Work, and compete for the normal claim. Promotion does not
 assign the Intake or authorize implementation.
 
-## New Intake updates
+## Retained Intake updates
 
-Use MCP `dongo_get_updates` or CLI `dongo updates get|wait` only after session
-start has supplied the initial Inbox snapshot.
+Session start already supplies the authoritative Inbox snapshot. The retained
+update stream remains a compatibility surface, not the default next call and
+not a background runner. Use MCP `dongo_get_updates` or CLI
+`dongo updates get|wait` only for an explicit adapter that needs bounded pulls.
 
 1. Call without `cursor` to start at version 0 and drain retained signals. This
    closes the race between session start and the first update pull. Refetch each
@@ -67,13 +69,6 @@ Each update has a unique ID and version, kind `intake_available`, Intake ID,
 signal urgency only; it does not bypass bounded pull, assign work, win a claim,
 or restart a stopped process. Refetch Intake and existing Work before triage.
 
-The human UI action is **Notify agent**. When an installation is actively
-waiting, the UI may report delivery to a waiting agent. Otherwise it reports
-that the notification is queued for the next explicit pull. The nudge mutation
-uses a stable idempotency key per click/request: replaying that key replays the
-same signal, while a deliberate later re-nudge uses a new key and creates a new
-versioned update. The read cursor is not that key.
-
 For CLI-only agents, preserve the cursor returned by `dongo updates get|wait`
 and drain `hasMore` immediately. `dongo session-start --json` and
 `dongo overview --json` remain valid full-state pulls. A stopped agent remains
@@ -85,8 +80,11 @@ that process is still running.
 1. Read the WorkItem and repository state.
 2. Start it atomically only when execution mode, human direction, parallel
    policy, session ownership, and workspace isolation allow.
-3. Perform changes through the active Run and renew its lease during long work.
-4. Add meaningful status updates without flooding the conversation.
+3. Perform changes through the active Run. Read `activeUntil` and renew before
+   expiry during long work instead of renewing after every command.
+4. Add one meaningful status update at a real phase or state transition. When
+   supported, combine `latestUpdate`, activity kind/label/next step, and one new
+   artifact in that call instead of sending separate mutations.
 5. Before finishing repository Work, follow [completion.md](completion.md):
    prove integration into the intended shared target using fresh remote state,
    and any required release acceptance. Record exact integrated revision and
@@ -94,6 +92,30 @@ that process is still running.
    integration/release on the same Work with a lease-safe handoff.
 
 CLI families: `dongo work get|start|update|renew|finish`.
+
+### Local runner ownership and emergency stops
+
+The optional local runner is repository-scoped background execution, not a way
+to wake or inject into this host session. From the exact registered repository
+root, `dongo runner status --json` is authoritative for its jobs, harnesses,
+approval mode, local capacity, and safe errors. If the exact Work already has a
+queued or active runner job, let that job own execution; do not start a second
+manual Run for the same item.
+
+Runner approval, browser review, deployment access, and automatic Inbox pickup
+are separate owner-controlled permissions. Do not infer one from another or
+change them merely to clear a queue. Runner jobs use isolated worktrees and
+their own dongo sessions; the project's concurrent-Run cap and the runner's
+local job cap are independent ceilings.
+
+For an emergency stop of one active managed job, use
+`dongo runner quarantine --job-id ID`. It installs an exact-job mutation guard
+before requesting cancellation and cannot undo a provider request already in
+flight. Supported release scripts enforce the same guard with
+`dongo runner mutation-check --job-id ID`; never bypass it or use
+`runner disable`/`remove` as a substitute for exact-job quarantine. Do not print
+process arguments or environments while diagnosing a credential-bearing runner;
+they may contain secrets.
 
 ### Parallel start metadata
 

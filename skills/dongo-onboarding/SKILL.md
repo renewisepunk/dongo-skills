@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.12"
+  version: "0.1.13"
 ---
 
 # dongo onboarding
@@ -61,8 +61,10 @@ another phase.
    Treat success as proof only for the returned project and host installation;
    do not assume a different repository is bound.
 4. Check whether `dongo --version` succeeds.
-5. If the CLI exists, run `dongo auth status` and run `dongo doctor` only when
-   this repository has a binding. Do not expose credential-bearing output.
+5. If the CLI exists, run `dongo auth status --json` and run
+   `dongo doctor --json` only when this repository has a binding. Prefer the
+   stable JSON result for decisions, but summarize only safe fields; do not
+   expose credential-bearing output.
 
 Do not collapse these observations into one “connected” result. Independently
 classify CLI installation/version, CLI authorization, repository binding,
@@ -87,6 +89,12 @@ installation and version `verified`, say that dongo is already installed, and
 move the visible progress label to the next phase. Do not narrate or display a
 download or update phase that did not run.
 
+After the first successful online CLI command, use its built-in update advisory
+as the version check. When it reports a newer stable release, show its exact
+version-pinned install command and ask before running it. Do not add a separate
+registry lookup to every healthy setup, install from registry-provided prose, or
+turn an unavailable update check into a setup failure.
+
 ## Connect the repository
 
 Choose the repository action explicitly from the repository root:
@@ -96,6 +104,12 @@ Choose the repository action explicitly from the repository root:
 - Run `dongo project create --name NAME` when the user wants a distinct new
   project. Add the trusted repository URL and requested execution mode when
   available.
+
+When the requested setup includes Codex as well as the CLI, add
+`--agent-host codex` to that one connect or create command. The browser can then
+approve both clients on one screen while dongo still issues separate,
+independently revocable CLI and Codex grants. Do not use this flag for Claude
+Code or treat combined approval as permission to copy the CLI credential.
 
 Both commands connect to `dongo.so`, open a browser, reuse a valid browser
 account session, and approve a new project-scoped CLI installation.
@@ -168,8 +182,11 @@ the repository connection failed merely because optional MCP setup is pending.
    starts. It must keep the
    human-only Ideas backlog outside agent reads, claims, attachments, and sync;
    only promoted Intake enters the agent workflow.
-5. Start the host's MCP login flow and let the user approve that separate agent
-   installation in the browser.
+5. Start the host's MCP login flow. When Codex was included with
+   `--agent-host codex`, let the host complete its own PKCE exchange against the
+   already approved Codex grant instead of forcing another owner decision.
+   Otherwise let the user approve the separate agent installation in the
+   browser. Claude Code and generic hosts always keep their own approval flow.
 6. If the host cannot reload MCP servers dynamically, explain that one restart is
    required. Do not claim the MCP connection is active before the host can see it.
 
@@ -205,12 +222,10 @@ explicit request to process multiple independent issues should use distinct
 delegated sessions and isolated worktrees up to available project and host
 capacity, refilling capacity as sessions finish.
 
-When the verified MCP host will remain active for new Intake, establish its
-retained-signal drain from version 0 with one `dongo_get_updates` call that
-omits `cursor`. For a CLI host, use `dongo updates get` for the same initial
-drain and `dongo updates wait` only while the process remains active. Explain
-that each
-server wait is bounded to 20 seconds, the CLI caller deadline defaults to five
-minutes, and a stopped agent will see Inbox only on its next session start or
-explicit pull; onboarding never creates a background process that can restart
-the host.
+Do not start the retained Intake update stream during normal onboarding.
+`dongo_session_start` already returns the authoritative Inbox snapshot, and the
+optional local runner is the supported background dispatch path. Use
+`dongo_get_updates` or `dongo updates get|wait` only for an explicit legacy
+adapter that needs bounded pull compatibility. A stopped agent still sees
+current Inbox only on its next session start or explicit pull; onboarding never
+creates a background process that can restart the host.
