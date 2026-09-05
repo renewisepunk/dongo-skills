@@ -10,7 +10,9 @@ Keep three independent states visible during onboarding:
    another repository does not bind the current repository.
 3. **MCP approval** — Codex, Claude Code, or another host may receive its own
    optional project-scoped installation. It never reuses the CLI credential and
-   is not required for CLI-only operation.
+   is not required for CLI-only operation. Codex consent may share the CLI
+   approval screen when `--agent-host codex` was explicitly requested, but the
+   resulting grants and credentials remain separate.
 
 ## Connect an additional repository
 

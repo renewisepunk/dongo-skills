@@ -13,6 +13,12 @@ undisclosed. All hosts remain supported for serial dongo work.
 
 ## Codex
 
+When repository connection and Codex setup are both still needed, prefer one
+owner approval with `dongo connect --agent-host codex` (or
+`dongo project create ... --agent-host codex`) before applying the integration.
+This combines only the consent screen: Codex still performs its own PKCE token
+exchange and owns a separate revocable credential.
+
 Preview and apply:
 
 ```sh
