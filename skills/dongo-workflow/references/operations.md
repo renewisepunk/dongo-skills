@@ -93,6 +93,28 @@ that process is still running.
 
 CLI families: `dongo work get|start|update|renew|finish`.
 
+### Parent Work and direct children
+
+Use one parent WorkItem to hold an epic-sized goal, shared constraints, and
+overall acceptance. Add only independently claimable slices as direct children:
+
+```sh
+dongo work create --title "Implement one slice" --goal "..." \
+  --parent-work-id PARENT_WORK_ITEM_ID --json
+```
+
+The MCP `create_work` equivalent uses `parentWorkItemId`. Use the exact parent
+ID returned by dongo; display and search still use the canonical identifier.
+Parent and child relationships are project-scoped and visible on both records.
+Children cannot have children, a closed parent cannot receive a new child, and
+the direct-child limit is 100.
+
+Do not create a child for a local checklist step, a single command, or evidence
+that belongs on the existing Run. A child needs its own executable goal, owner,
+verification, and truthful completion lifecycle. Keep the parent open until the
+required children and parent-level integration or release outcome are complete;
+child completion does not automatically complete the parent.
+
 ### Local runner ownership and emergency stops
 
 The optional local runner is repository-scoped background execution, not a way

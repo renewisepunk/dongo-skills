@@ -95,6 +95,23 @@ For every authorized issue, keep the dongo record and repository state aligned:
 Do not leave claimed Intake, Ready Work, or an active Run merely because the
 local conversation moved on.
 
+## Plan large outcomes with direct subtasks
+
+When one larger outcome has several independently executable and verifiable
+slices, create one parent WorkItem for the shared goal and a small set of direct
+child WorkItems for those slices. This is the dongo epic pattern: every child is
+still a normal issue with its own claim, Run, outcome, and integration evidence,
+while the parent keeps the overall acceptance and release outcome coherent.
+
+Create a child with `parentWorkItemId` over MCP or `--parent-work-id` in the CLI,
+using the exact parent WorkItem ID returned by dongo. Children cannot have their
+own children, closed Work cannot receive new children, and one parent may have
+at most 100 direct children. Do not turn commands, tests, review notes, or every
+checklist step into child Work. Keep those as Run updates or comments; create a
+child only when another session could own it independently with a concrete Done
+condition. Finish the parent only after every required child and the parent-level
+integration or release acceptance are genuinely complete.
+
 ## Receive answered Attention
 
 A stopped local agent cannot wake itself. On every new or resumed host session,

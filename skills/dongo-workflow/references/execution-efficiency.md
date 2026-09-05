@@ -27,6 +27,12 @@ job. Check runner status from the exact registered repository when ownership is
 unclear. Never create a second session, WorkItem, or Run to work around stale
 display text, a busy runner, a revision conflict, or a lost claim.
 
+For a larger outcome, prefer one parent WorkItem plus a bounded set of direct
+children over many flat items. Create a child only when it is independently
+claimable and verifiable; keep implementation steps and test checklists in the
+owning Run. Parallel child Runs may implement distinct slices, while the parent
+retains the shared acceptance and release goal.
+
 ## Make updates useful and economical
 
 Record a Run update when the phase, user-visible result, blocker, or next action
