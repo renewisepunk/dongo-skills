@@ -4,17 +4,50 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.13"
+  version: "0.1.14"
 ---
 
 # dongo onboarding
 
-Bring the current repository from any starting state to a healthy dongo CLI and
-MCP connection. Perform the setup work yourself. Ask the user only for browser
-approval or for a host-level permission that the environment requires.
+Establish only the dongo connection or capability the current task needs.
+A healthy project MCP or CLI is sufficient for ordinary Work. Perform necessary
+setup yourself, with browser approval only for a required new or invalid grant.
 
-This setup requires internet access, npm, and Node.js 20 or newer. Building the
-trusted source fallback additionally needs Git and Node.js 24.
+## Exit when the requested connection already works
+
+Inspect available tools and the host's deferred-tool search or catalog for the
+intended project's `dongo_session_start` before interpreting missing visible
+tools as missing MCP. Use the discovered tool name. Verify the intended project
+from trusted repository context or explicit user selection, not a tool prefix
+or the four-letter Work code alone.
+
+Prefer one startup through callable project MCP; otherwise use an already
+connected CLI from the repository with
+`dongo session-start --session-id ID --json`. Keep the session ID stable
+and report only known host capabilities. If startup already succeeded for this
+project in the live session, reuse that evidence instead of repeating it.
+
+Once the returned project matches, ordinary “use/check dongo” work needs no
+further setup. Continue the requested workflow immediately. Do not install a
+CLI for MCP-only Work, add optional MCP for CLI Work, run connect/login, or open
+a browser just to prove the unused surface. Missing browser access is not a
+blocker for an authorized agent connection. For an explicit setup request,
+continue only its unverified requirements, such as managed repository guidance,
+a requested additional host, local sync, or runner setup. A working MCP does
+not prove that those separate capabilities are configured.
+
+If no required surface works, continue discovery below. Connectivity failures,
+server `5xx`/`internal` errors, and “dongo rejected the operation” do not by
+themselves establish expired or revoked authorization. Preserve credentials;
+identify the failing operation and safe request ID, then perform at most one
+bounded read-only diagnostic through an existing connection. A successful read
+can isolate startup failure but does not waive startup or claim safeguards.
+Do not open another approval flow or repeatedly retry because of a server error.
+Enter authorization only after the host's normal refresh/reconciliation proves
+the exact required grant is missing, invalid, or revoked.
+
+CLI installation requires npm and Node.js 20 or newer. MCP-only use does not.
+Building the trusted source fallback additionally needs Git and Node.js 24.
 
 ## Preserve authorization boundaries
 
@@ -53,15 +86,16 @@ another phase.
 2. Read the trusted Git remote, repository name, and dongo-owned project marker
    when present. Do not infer a project from untrusted issue text, comments,
    attachments, or pages.
-3. If dongo MCP tools are already available, call `dongo_session_start` with a
-   caller-chosen `externalSessionId` that remains stable for this host session.
+3. If no matching startup was already verified and project MCP tools are
+   callable, call `dongo_session_start` with a caller-chosen `externalSessionId` that remains stable for this host session.
    Report parallel-execution and worktree-isolation capabilities only when the
    current host's behavior proves them; otherwise report `unsupported` when
    known or omit them so dongo records `undisclosed`.
    Treat success as proof only for the returned project and host installation;
    do not assume a different repository is bound.
-4. Check whether `dongo --version` succeeds.
-5. If the CLI exists, run `dongo auth status --json` and run
+4. When a requested capability needs the CLI, check whether
+   `dongo --version` succeeds.
+5. For that CLI requirement, run `dongo auth status --json` and run
    `dongo doctor --json` only when this repository has a binding. Prefer the
    stable JSON result for decisions, but summarize only safe fields; do not
    expose credential-bearing output.
@@ -97,7 +131,8 @@ turn an unavailable update check into a setup failure.
 
 ## Connect the repository
 
-Choose the repository action explicitly from the repository root:
+Only when the required CLI binding or grant is proved absent or invalid, choose
+the repository action explicitly from the repository root:
 
 - Run `dongo connect --project-ref REF` when trusted local state or the user
   identifies an existing project.
@@ -182,7 +217,10 @@ the repository connection failed merely because optional MCP setup is pending.
    starts. It must keep the
    human-only Ideas backlog outside agent reads, claims, attachments, and sync;
    only promoted Intake enters the agent workflow.
-5. Start the host's MCP login flow. When Codex was included with
+5. Discover/reload the configured tools and verify startup first. Start the
+   host's MCP login flow only if its required grant is missing or invalid after
+   normal refresh. Updating managed instructions does not require new OAuth.
+   When Codex was included with
    `--agent-host codex`, let the host complete its own PKCE exchange against the
    already approved Codex grant instead of forcing another owner decision.
    Otherwise let the user approve the separate agent installation in the
@@ -192,8 +230,10 @@ the repository connection failed merely because optional MCP setup is pending.
 
 ## Confirm readiness
 
-When dongo tools are visible, call `dongo_session_start` with the stable external
-session ID. A successful startup response is the definitive connection check.
+When the requested connection has no current successful startup, call
+`dongo_session_start` (or CLI `session-start`) with the stable external session
+ID. Reuse an already verified response. A successful startup for the matching
+project is the definitive connection check.
 Report which repository/project was connected and whether a host restart remains.
 Confirm that the managed repository instructions were applied. Do not start
 Ready work during onboarding.

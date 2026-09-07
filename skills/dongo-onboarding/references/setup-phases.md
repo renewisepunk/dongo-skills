@@ -19,7 +19,16 @@ Never infer `verified` from requested intent, a command being launched, an old
 task label, another repository's healthy connection, or a later phase. Never
 infer `failed` from a missing observation alone.
 
-## Ordered ledger
+## Scope before phases
+
+First discover visible and deferred project MCP tools. One successful startup
+through MCP or an already connected CLI, with the intended project confirmed,
+is enough for ordinary Work. Reuse it and mark unused surfaces `not required`;
+do not run every row below as a checklist. An explicit setup request may still
+require managed guidance, a second host, or a local CLI capability. Verify only
+those additional requirements without resetting the healthy connection.
+
+## Phase ledger
 
 | Phase | Read-only evidence | Mutation only when needed | Do not confuse with |
 | --- | --- | --- | --- |
@@ -57,20 +66,22 @@ phase or blocker is known.
 
 ### Existing healthy setup
 
-When version, authorization, binding, doctor, managed integration, and
-`dongo_session_start` all pass, mark them `verified`. Do not run install,
-connect, or login. Continue directly to the capability the user requested.
+When a matching project startup succeeds on one surface, mark that connection
+`verified`. For ordinary Work, mark the other surface and optional setup phases
+`not required` and continue. Do not require every phase to pass before using a
+healthy connection. Updating managed guidance does not invalidate its grant.
 
 ### Absent setup
 
-When `dongo --version` fails because the executable is absent, install the exact
+When the task requires CLI functionality and `dongo --version` fails because the
+executable is absent, install the exact
 trusted package after applying the CLI install policy. Then repeat discovery
 from the version phase; do not assume installation also authorized a project.
 
 ### Expired authorization
 
-When the executable and repository marker are healthy but the stored grant is
-explicitly expired or revoked, keep installation and binding `verified`, mark
+When normal refresh/reconciliation cannot recover the required grant and it is
+explicitly missing, invalid, or revoked, keep installation and binding `verified`, mark
 only CLI authorization `failed`, and start a new repository-scoped approval.
 For an expired MCP grant, refresh only that host installation.
 
@@ -88,6 +99,17 @@ visible, switch the affected phase to `recovering`. Repeat the bounded read-only
 check. If the desired state is already present, mark the prior attempt
 superseded and continue. Start a new mutation only when the observation proves
 the required state is still absent or invalid.
+
+### Connectivity or server failure
+
+A failed doctor connectivity row, timeout, `5xx`, `internal`, or generic
+“dongo rejected the operation” is not proof of invalid credentials. Preserve
+verified setup phases and diagnose that operation with one bounded read through
+an existing connection when useful. Record the safe error category/request ID;
+do not log raw response bodies or issue repeated connect/login attempts. An
+optional broken surface does not block a healthy required one. A failed
+required startup remains unresolved even if `work get` succeeds; no capability
+flag, manual claim, or credential reset may bypass that startup requirement.
 
 ## Final report
 

@@ -11,6 +11,18 @@ Report each capability from tested behavior of the current host/runtime. Use
 `unsupported` for a known missing capability and leave an uncertain capability
 undisclosed. All hosts remain supported for serial dongo work.
 
+## Discover before configuration or login
+
+In Codex, Claude Code, or a generic host, inspect available tools and its
+supported deferred-tool search/catalog before declaring the project server
+missing. Missing tool visibility may require loading a tool or reloading the
+host, not OAuth. Use a callable `dongo_session_start` once and confirm the
+returned project; an already successful startup needs no login repetition.
+Check the exact host entry only when required tools remain unavailable. Keep
+a healthy CLI workflow usable while optional host setup waits. The commands
+below apply to a missing integration or an explicitly invalid required grant;
+they are not routine health checks.
+
 ## Codex
 
 When repository connection and Codex setup are both still needed, prefer one

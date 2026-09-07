@@ -1,6 +1,7 @@
 # CLI installation
 
-Use the least invasive working route. The packed dongo CLI requires Node.js 20
+Use the least invasive working route. Install only when the requested task needs
+CLI functionality; a working project MCP is sufficient for ordinary Work. The packed dongo CLI requires Node.js 20
 or newer. Building the current source checkout uses Node.js 24.
 
 ## Existing installation

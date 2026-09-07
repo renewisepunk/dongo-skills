@@ -5,6 +5,9 @@ by skipping lifecycle, integration, or release safeguards.
 
 ## Reuse current state
 
+- Discover visible and deferred tools before deciding MCP is absent. One
+  successful startup for the intended project is sufficient; do not require
+  both CLI and MCP or reopen onboarding for an unrelated failed capability.
 - `dongo_session_start` returns the project, execution policy, resolved
   Attention, and current Overview. Read that response before requesting another
   Overview.
