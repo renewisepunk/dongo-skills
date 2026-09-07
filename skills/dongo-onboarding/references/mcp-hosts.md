@@ -9,8 +9,10 @@ its own grant and never reuses the repository's CLI credential.
 MCP connectivity alone does not prove parallel execution or worktree isolation.
 Report each capability from tested behavior of the current host/runtime. Use
 `unsupported` for a known missing capability. On a new session an omitted
-capability is undisclosed; omitting the whole object on refresh preserves prior reports.
-Explicitly report both values when capability changes. All hosts support serial work.
+capability is undisclosed. Current policy-capable servers retain prior reports
+when the whole object is omitted on refresh. Legacy retention is unproven;
+apply [SKILL.md](../SKILL.md)'s known/unknown refresh rule. Explicitly report
+both values when capability changes. All hosts support serial work.
 
 ## Discover before configuration or login
 

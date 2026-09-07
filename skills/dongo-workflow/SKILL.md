@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "check dongo", "pro
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.13"
+  version: "0.1.14"
 ---
 
 # dongo workflow
@@ -112,11 +112,18 @@ once and reuse it for the current host session. This call starts no work.
 
 When known, report `hostCapabilities.parallelExecution` and
 `hostCapabilities.worktreeIsolation` as `supported` or `unsupported`. Omit an
-uncertain capability on a new session so it is `undisclosed`. Omitting the whole
-capability object on refresh preserves prior reports; explicitly report both
-values when capability changes.
+uncertain capability on a new session so it is `undisclosed`. On a current
+policy-capable server, omitting the whole capability object on refresh preserves
+prior reports; explicitly report both values when capability changes.
 Never infer support from a host name or MCP connectivity. One external session
 may own at most one active WorkItem.
+
+On the legacy policy-absent/unsupported compatibility path, omission retention
+is unproven. Resend both current known truthful capability values on refresh
+when available, using the same stable session. If current capabilities are
+unknown, omit them rather than inventing support or a downgrade; keep the host
+on the undisclosed/serial path. Use actual startup results as authoritative
+server state, never as new proof of the host's native facilities.
 
 Read the startup context before deciding what to do:
 
