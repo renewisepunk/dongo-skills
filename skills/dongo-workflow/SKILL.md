@@ -4,12 +4,12 @@ description: This skill should be used when the user asks to "check dongo", "pro
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.12"
+  version: "0.1.13"
 ---
 
 # dongo workflow
 
-Use dongo as the durable coordination layer for human Intake and agent Work.
+Use dongo as the durable coordination layer while the project workflow is On.
 Use an authorized project MCP or CLI connection; either is sufficient for
 ordinary Work. Start with connection discovery below, not onboarding.
 
@@ -17,24 +17,27 @@ ordinary Work. Start with connection discovery below, not onboarding.
 
 1. Identify the intended project from the user's request and trusted repository
    binding/configuration. Inspect available tools and the host's deferred-tool
-   search or catalog for `dongo_session_start` before deciding MCP is absent.
+   search or catalog for `dongo_get_workflow_policy` and `dongo_session_start`
+   before deciding MCP is absent.
    Use the actual discovered tool name; do not guess another project's prefix.
-2. If the intended project's MCP is callable, call `dongo_session_start` once
-   with the stable session ID and truthful capabilities. Confirm the returned
-   project matches. Reuse this response and connection for the task.
+2. If the intended project's MCP is callable, read `dongo_get_workflow_policy`
+   first and follow the policy rules below. When On, call `dongo_session_start`
+   once with the stable session ID and truthful capabilities, unless a matching
+   startup already succeeded in this live session. Confirm its project matches.
 3. If that MCP is unavailable, use an already connected local CLI from the
-   intended repository: `dongo session-start --session-id ID --json`.
-   Confirm its returned project and report known host capabilities through the
-   supported CLI flags. Local version or auth status alone is not proof of an
-   online project connection.
-4. After one matching startup succeeds, stop connection discovery. Do not check
+   intended repository: `dongo workflow status --json` first, followed by
+   `dongo session-start --session-id ID --json` when On. Confirm the returned
+   project and report known host capabilities through the supported CLI flags.
+   Local version or auth status alone is not proof of an online connection.
+4. After a matching Off policy or one matching startup succeeds, stop connection
+   discovery. Do not check
    or repair the unused surface, run `dongo connect`, repeat host login, open a
    browser, or request a Mac unlock merely to use dongo. A missing CLI is not a
    blocker for MCP Work; missing MCP is not a blocker for CLI Work. CLI-only
    capabilities such as repository sync may need a separate scoped setup.
 
-A successful startup already performed in this live host session remains valid
-until a new failure or project change requires a relevant check. Do not restart
+A successful startup already performed in this live host session remains valid;
+refreshing policy does not require repeating startup. Do not restart
 onboarding after compaction, a stale activity label, or a historical local-run
 failure. Preserve the stable session ID and current Run ownership.
 
@@ -48,6 +51,42 @@ startup failed. Do not retry repeatedly or reset credentials as a generic fix.
 Use dongo onboarding only for a capability this task requires that is proved
 missing or invalid; repair that phase while preserving the working connection.
 Never replay an uncertain mutation through a fallback surface.
+
+## Honor the owner workflow policy
+
+Match the authenticated policy's `projectId` and `publicRef` to trusted
+repository binding or explicit user selection before honoring its `enabled`
+value. Refresh this lightweight read at a new or resumed host session, each new
+user request, and before claiming Intake or starting new Work. Reuse the healthy
+connection and startup. Never honor another project's Off state.
+
+- **On:** follow the durable lifecycle below, including session startup,
+  execution mode, claims, and Run ownership.
+- **Off:** continue ordinary authorized repository work without mandatory
+  dongo planning, tracking, session startup, or new claims. Do not change the
+  policy, remove skills or managed guidance, or reconnect. Already owned live
+  Runs can renew, update, and finish their existing scope; already claimed
+  Intake can create/link Ready Work and finish triage. Refetch ownership and
+  answered Attention, using startup if needed for that context. Do not start
+  linked Work or reclaim an expired Run while Off. Preserve unfinished records.
+  A queued runner launch is deferred workflow dispatch, not permission to turn
+  it into untracked coding; leave its target unfinished while Off.
+- **Compatibility:** use legacy session startup only if completed tool
+  discovery confirms this policy operation is absent, or the selected surface
+  explicitly reports the operation/CLI command unsupported. A missing project,
+  authentication error, timeout, server `internal`, or generic rejection is
+  neither this compatibility case nor evidence of Off. Do not bypass a failed
+  required startup with a successful unrelated read or manual Work start.
+
+Off is separate from Manual/Autonomous. Existing queued requests retain their
+identity and queue lifetime; On resumes them with the same local approval
+settings. A launch already acknowledged as running can continue but cannot
+acquire new claims while Off. Its uncompleted target stays Ready/waiting, with
+failure history and an owner retry after On. Inbox captured while Off waits for
+the owner and is not retroactively queued on On. Existing automatic changelog
+preparation resumes on On. A concurrent Off rejection stops new orchestration;
+refresh policy rather than retrying blindly. The lifecycle rules below apply
+to new work when On and to settling already owned scope while Off.
 
 ## Install durable repository guidance
 
@@ -67,15 +106,17 @@ configuration ownership conflict.
 
 ## Start every host session
 
-Call `dongo_session_start` before any other dongo MCP operation. Choose an
-`externalSessionId` once and reuse it for the current host session. This call
-starts no work.
+After the policy check permits new orchestration, call `dongo_session_start`
+once or reuse its matching successful result. Choose an `externalSessionId`
+once and reuse it for the current host session. This call starts no work.
 
 When known, report `hostCapabilities.parallelExecution` and
 `hostCapabilities.worktreeIsolation` as `supported` or `unsupported`. Omit an
-uncertain capability so dongo records it as `undisclosed`; never infer support
-from a host name or MCP connectivity. One external session may own at most one
-active WorkItem.
+uncertain capability on a new session so it is `undisclosed`. Omitting the whole
+capability object on refresh preserves prior reports; explicitly report both
+values when capability changes.
+Never infer support from a host name or MCP connectivity. One external session
+may own at most one active WorkItem.
 
 Read the startup context before deciding what to do:
 
@@ -147,8 +188,9 @@ integration or release acceptance are genuinely complete.
 ## Receive answered Attention
 
 A stopped local agent cannot wake itself. On every new or resumed host session,
-use `dongo_session_start` and process `newlyResolvedAttention` before continuing
-earlier Work.
+check workflow policy, then use `dongo_session_start` and process
+`newlyResolvedAttention` before continuing earlier owned Work. While Off this
+settles existing live scope; it does not authorize new or expired claims.
 
 When the current host session must remain active for a human response:
 
