@@ -11,9 +11,12 @@ At `dongo_session_start`, report `hostCapabilities.parallelExecution` and
 `hostCapabilities.worktreeIsolation` as `supported` only after confirming that
 the current host can create distinct agent sessions and isolated worktrees.
 Report a known lack as `unsupported`. Omit uncertain values on a new session so
-dongo returns `undisclosed`. On session refresh, omitting the whole object preserves prior
-reports; explicitly report both values when capability changes. Check workflow policy
-before new orchestration; parallel capacity does not override Off.
+dongo returns `undisclosed`. On a current policy-capable server, omitting the
+whole object on refresh preserves prior reports; explicitly report both values
+when capability changes. The legacy policy-absent path has no proven retention:
+follow [SKILL.md](../SKILL.md)'s refresh rule for known versus unknown values.
+Check workflow policy before new orchestration; parallel capacity does not
+override Off.
 
 For CLI sessions, pass both `--parallel-capability` and
 `--worktree-capability`, or omit both. Preserve the same `--session-id` for the

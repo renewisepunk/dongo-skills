@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.15"
+  version: "0.1.16"
 ---
 
 # dongo onboarding
@@ -110,9 +110,14 @@ another phase.
    `externalSessionId` that remains stable for this host session.
    Report parallel-execution and worktree-isolation capabilities only when the
    current host's behavior proves them; otherwise report `unsupported` when
-   known. Omission on a new session records `undisclosed`; omitting the whole
-   object on refresh preserves prior reports. Explicitly report both values
-   when capability changes.
+   known. Omission on a new session records `undisclosed`. On a current
+   policy-capable server, omitting the whole object on refresh preserves prior
+   reports; explicitly report both values when capability changes. On the
+   legacy policy-absent/unsupported path, retention is unproven: resend both
+   current known truthful values on refresh when available. If current
+   capabilities are unknown, omit them and keep the host undisclosed/serial;
+   never invent support or a downgrade. Actual startup results are authoritative
+   server state, not new proof of native host facilities.
    Treat success as proof only for the returned project and host installation;
    do not assume a different repository is bound.
 4. When a requested capability needs the CLI, check whether

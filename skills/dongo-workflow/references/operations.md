@@ -160,8 +160,10 @@ At session start, optionally report:
 ```
 
 Inputs use `supported` or `unsupported`; omission is `undisclosed` on a new
-session and omitting the whole object preserves the previous report on refresh.
-Explicitly report both values when capability changes. Do not derive capability from host branding.
+session. Current policy-capable servers retain the previous report when the
+whole object is omitted on refresh. Legacy retention is unproven; apply
+[SKILL.md](../SKILL.md)'s refresh rule. Explicitly report both values when
+capability changes. Do not derive capability from host branding.
 
 CLI equivalent:
 
