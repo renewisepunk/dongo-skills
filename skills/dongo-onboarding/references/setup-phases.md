@@ -21,9 +21,11 @@ infer `failed` from a missing observation alone.
 
 ## Scope before phases
 
-First discover visible and deferred project MCP tools. One successful startup
-through MCP or an already connected CLI, with the intended project confirmed,
-is enough for ordinary Work. Reuse it and mark unused surfaces `not required`;
+First discover visible and deferred project MCP tools and apply SKILL.md's
+workflow policy read. A matching authenticated Off result is a healthy
+connection and ordinary coding proceeds without new dongo orchestration. When
+On, one successful startup through MCP or an already connected CLI is enough.
+Reuse it and mark unused surfaces `not required`;
 do not run every row below as a checklist. An explicit setup request may still
 require managed guidance, a second host, or a local CLI capability. Verify only
 those additional requirements without resetting the healthy connection.
@@ -37,7 +39,7 @@ those additional requirements without resetting the healthy connection.
 | Repository binding | trusted remote plus `.agent-work/project.json` | connect to the exact existing/new project | another checkout's binding |
 | Repository diagnostics | `dongo doctor --json` after a binding exists | repair only the diagnosed marker/credential issue | GitHub or deployment access |
 | Host integration | preview/read back managed host config and instructions | reviewed `dongo integrate <host> --apply` | host OAuth |
-| Host authorization | `dongo_session_start` for the exact project resource | host-native project-scoped login | CLI credential or human browser cookie |
+| Host authorization | matching authenticated workflow policy, including Off; startup when On or settling an existing claim | host-native project-scoped login | another project's policy, CLI credential, or human browser cookie |
 | Runner registration | `dongo runner status --json` and expected project | owner-authorized runner setup/restart | an online agent Run |
 | Inbox pickup | current Inbox plus a proved pickup/queue transition when required | enable or trigger the documented pickup path | Ready Work dispatch |
 | GitHub capability | non-mutating `gh auth status` and repository read from the runner context | reauthorize only GitHub when invalid | dongo auth |
@@ -66,7 +68,8 @@ phase or blocker is known.
 
 ### Existing healthy setup
 
-When a matching project startup succeeds on one surface, mark that connection
+When matching policy succeeds (including Off), or legacy startup succeeds after
+an explicitly absent/unsupported policy operation, mark that connection
 `verified`. For ordinary Work, mark the other surface and optional setup phases
 `not required` and continue. Do not require every phase to pass before using a
 healthy connection. Updating managed guidance does not invalidate its grant.

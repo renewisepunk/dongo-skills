@@ -8,16 +8,19 @@ its own grant and never reuses the repository's CLI credential.
 
 MCP connectivity alone does not prove parallel execution or worktree isolation.
 Report each capability from tested behavior of the current host/runtime. Use
-`unsupported` for a known missing capability and leave an uncertain capability
-undisclosed. All hosts remain supported for serial dongo work.
+`unsupported` for a known missing capability. On a new session an omitted
+capability is undisclosed; omitting the whole object on refresh preserves prior reports.
+Explicitly report both values when capability changes. All hosts support serial work.
 
 ## Discover before configuration or login
 
 In Codex, Claude Code, or a generic host, inspect available tools and its
 supported deferred-tool search/catalog before declaring the project server
 missing. Missing tool visibility may require loading a tool or reloading the
-host, not OAuth. Use a callable `dongo_session_start` once and confirm the
-returned project; an already successful startup needs no login repetition.
+host, not OAuth. Apply SKILL.md's intended-project workflow policy read first.
+Off is a healthy connection; when On use one matching `dongo_session_start` or
+reuse its successful result. Only an explicitly absent/unsupported policy
+operation uses legacy startup. No policy refresh requires login repetition.
 Check the exact host entry only when required tools remain unavailable. Keep
 a healthy CLI workflow usable while optional host setup waits. The commands
 below apply to a missing integration or an explicitly invalid required grant;

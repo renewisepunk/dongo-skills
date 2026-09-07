@@ -3,6 +3,13 @@
 Use MCP tool descriptions as the canonical argument schema. The CLI exposes the
 same versioned operation contract and supports `--json` for stable output.
 
+Apply SKILL.md's workflow policy check before new orchestration. MCP
+`dongo_get_workflow_policy` and CLI `dongo workflow status --json` return the
+authenticated `projectId`, `publicRef`, `enabled`, and policy `revision` without
+starting a session. Off permits ordinary authorized coding and settlement of
+existing live claims, but no new claims/starts or expired-Run reclaim. Only an
+explicitly absent/unsupported policy operation uses legacy startup.
+
 ## Intake triage
 
 1. Inspect the repository and existing Work for duplicates.
@@ -152,8 +159,9 @@ At session start, optionally report:
 }
 ```
 
-Inputs use `supported` or `unsupported`; omission becomes `undisclosed` in the
-returned session view. Do not derive capability from host branding.
+Inputs use `supported` or `unsupported`; omission is `undisclosed` on a new
+session and omitting the whole object preserves the previous report on refresh.
+Explicitly report both values when capability changes. Do not derive capability from host branding.
 
 CLI equivalent:
 

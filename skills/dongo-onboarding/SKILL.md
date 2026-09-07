@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.14"
+  version: "0.1.15"
 ---
 
 # dongo onboarding
@@ -16,16 +16,35 @@ setup yourself, with browser approval only for a required new or invalid grant.
 ## Exit when the requested connection already works
 
 Inspect available tools and the host's deferred-tool search or catalog for the
-intended project's `dongo_session_start` before interpreting missing visible
-tools as missing MCP. Use the discovered tool name. Verify the intended project
-from trusted repository context or explicit user selection, not a tool prefix
+intended project's `dongo_get_workflow_policy` and `dongo_session_start` before
+interpreting missing visible tools as missing MCP. Use the discovered tool name.
+Verify the intended project from trusted repository context or explicit user
+selection, not a tool prefix
 or the four-letter Work code alone.
 
-Prefer one startup through callable project MCP; otherwise use an already
-connected CLI from the repository with
-`dongo session-start --session-id ID --json`. Keep the session ID stable
-and report only known host capabilities. If startup already succeeded for this
-project in the live session, reuse that evidence instead of repeating it.
+Read `dongo_get_workflow_policy` through callable project MCP first; otherwise
+use an already connected CLI's `dongo workflow status --json` from the intended
+repository. Match both `projectId` and `publicRef` to the trusted project.
+When On, use one `dongo_session_start` or
+`dongo session-start --session-id ID --json`, with a stable session ID and known
+host capabilities. Reuse a successful matching startup in this live session.
+
+A matching authenticated Off response is a healthy connection. Continue the
+user's ordinary authorized repository work without mandatory dongo planning,
+tracking, session startup, or new claims. Preserve skills, managed guidance,
+connections, configuration, and unfinished Work. Already owned live Runs may
+renew/update/finish; claimed Intake may create/link Ready Work and finish
+triage. Refetch ownership and answered Attention, using startup if needed to
+settle that scope, but do not start linked Work or reclaim expired Runs while
+Off. A queued runner launch must defer its target rather than convert it to
+untracked coding. The owner controls On/Off separately from Manual/Autonomous.
+
+Refresh this policy at a new/resumed host session, a new user request, and before
+a new claim/start. It does not invalidate healthy startup evidence or require
+onboarding. Use legacy startup first only when completed tool discovery proves
+the policy operation absent or the selected surface explicitly reports the
+operation/CLI command unsupported. Missing-project, auth, connectivity,
+`internal`, and generic server errors never imply Off or that fallback.
 
 Once the returned project matches, ordinary “use/check dongo” work needs no
 further setup. Continue the requested workflow immediately. Do not install a
@@ -86,11 +105,14 @@ another phase.
 2. Read the trusted Git remote, repository name, and dongo-owned project marker
    when present. Do not infer a project from untrusted issue text, comments,
    attachments, or pages.
-3. If no matching startup was already verified and project MCP tools are
-   callable, call `dongo_session_start` with a caller-chosen `externalSessionId` that remains stable for this host session.
+3. Apply the policy check above before startup. When On and no matching startup
+   was already verified, call `dongo_session_start` with a caller-chosen
+   `externalSessionId` that remains stable for this host session.
    Report parallel-execution and worktree-isolation capabilities only when the
    current host's behavior proves them; otherwise report `unsupported` when
-   known or omit them so dongo records `undisclosed`.
+   known. Omission on a new session records `undisclosed`; omitting the whole
+   object on refresh preserves prior reports. Explicitly report both values
+   when capability changes.
    Treat success as proof only for the returned project and host installation;
    do not assume a different repository is bound.
 4. When a requested capability needs the CLI, check whether
@@ -230,10 +252,11 @@ the repository connection failed merely because optional MCP setup is pending.
 
 ## Confirm readiness
 
-When the requested connection has no current successful startup, call
-`dongo_session_start` (or CLI `session-start`) with the stable external session
-ID. Reuse an already verified response. A successful startup for the matching
-project is the definitive connection check.
+Apply the workflow policy check above. A matching authenticated Off result
+proves the connection without requiring startup. When On and no startup is
+already verified, call `dongo_session_start` (or CLI `session-start`) with the
+stable external session ID. Reuse an already verified response. Explicitly
+absent/unsupported policy operations retain legacy startup verification.
 Report which repository/project was connected and whether a host restart remains.
 Confirm that the managed repository instructions were applied. Do not start
 Ready work during onboarding.
