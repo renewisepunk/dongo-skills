@@ -4,18 +4,50 @@ description: This skill should be used when the user asks to "check dongo", "pro
 license: MIT
 metadata:
   author: dongo
-  version: "0.1.11"
+  version: "0.1.12"
 ---
 
 # dongo workflow
 
 Use dongo as the durable coordination layer for human Intake and agent Work.
-Prefer the remote MCP tools when available; otherwise use equivalent `dongo` CLI
-commands with stable JSON output. If neither connection exists, complete dongo
-onboarding before attempting project operations.
+Use an authorized project MCP or CLI connection; either is sufficient for
+ordinary Work. Start with connection discovery below, not onboarding.
 
-This workflow requires an authorized dongo MCP connection or dongo CLI
-connection.
+## Reuse the current connection
+
+1. Identify the intended project from the user's request and trusted repository
+   binding/configuration. Inspect available tools and the host's deferred-tool
+   search or catalog for `dongo_session_start` before deciding MCP is absent.
+   Use the actual discovered tool name; do not guess another project's prefix.
+2. If the intended project's MCP is callable, call `dongo_session_start` once
+   with the stable session ID and truthful capabilities. Confirm the returned
+   project matches. Reuse this response and connection for the task.
+3. If that MCP is unavailable, use an already connected local CLI from the
+   intended repository: `dongo session-start --session-id ID --json`.
+   Confirm its returned project and report known host capabilities through the
+   supported CLI flags. Local version or auth status alone is not proof of an
+   online project connection.
+4. After one matching startup succeeds, stop connection discovery. Do not check
+   or repair the unused surface, run `dongo connect`, repeat host login, open a
+   browser, or request a Mac unlock merely to use dongo. A missing CLI is not a
+   blocker for MCP Work; missing MCP is not a blocker for CLI Work. CLI-only
+   capabilities such as repository sync may need a separate scoped setup.
+
+A successful startup already performed in this live host session remains valid
+until a new failure or project change requires a relevant check. Do not restart
+onboarding after compaction, a stale activity label, or a historical local-run
+failure. Preserve the stable session ID and current Run ownership.
+
+If startup fails, distinguish absent tools from explicit missing/revoked
+credentials and from connectivity/server errors. A timeout, `5xx`, `internal`,
+or “dongo rejected the operation” alone does not prove invalid authorization.
+Preserve credentials and report the failing operation and safe request ID. One
+bounded read through an existing authorized surface can locate the failing
+layer; it does not replace required startup or authorize a Work start after
+startup failed. Do not retry repeatedly or reset credentials as a generic fix.
+Use dongo onboarding only for a capability this task requires that is proved
+missing or invalid; repair that phase while preserving the working connection.
+Never replay an uncertain mutation through a fallback surface.
 
 ## Install durable repository guidance
 
