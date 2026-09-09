@@ -31,7 +31,7 @@ ordinary Work. Start with connection discovery below, not onboarding.
    Local version or auth status alone is not proof of an online connection.
 4. After a matching Off policy or one matching startup succeeds, stop connection
    discovery. Do not check
-   or repair the unused surface, run `dongo connect`, repeat host login, open a
+   or repair the unused surface, run `dongo login` again, repeat host login, open a
    browser, or request a Mac unlock merely to use dongo. A missing CLI is not a
    blocker for MCP Work; missing MCP is not a blocker for CLI Work. CLI-only
    capabilities such as repository sync may need a separate scoped setup.

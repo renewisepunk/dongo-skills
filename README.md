@@ -10,13 +10,12 @@ only when the requested task needs the CLI and it is not already available.
 
 ## Included skills
 
-- `dongo-onboarding` repairs only missing required setup, connects a repository,
-  previews and applies managed `AGENTS.md` or `CLAUDE.md` guidance, configures
-  the current agent's MCP host, and guides browser approval. It starts with
-  read-only discovery, reports each setup/capability phase separately, and
-  never starts authentication merely because a later phase is missing. Codex
-  setup can combine CLI and host consent on one screen while keeping their
-  credentials separate.
+- `dongo-onboarding` signs this computer in once, points the current folder at a
+  dongo project, and optionally configures the agent's MCP host. It clears what
+  older versions left behind first, so running it again converges instead of
+  layering. It never starts another browser approval when this computer is
+  already signed in. Codex setup can combine CLI and host consent on one screen
+  while keeping their credentials separate.
 - `dongo-workflow` teaches an agent how to triage Intake, claim and complete Work,
   handle Attention, keep repository work attached to active Runs, and respect
   dongo's concurrency and security rules, including the complete issue
@@ -41,12 +40,12 @@ one consent screen while retaining separate grants. A newly configured MCP
 connection may require restarting the agent host if it cannot reload MCP servers
 in the current session.
 
-Connecting another repository does not require signing out of a healthy dongo
-account. The agent creates a separate repository binding and lets the browser
-reuse the current account session. MCP remains an optional, separately approved
-project connection. On the free plan, a second active project requires choosing
-whether to upgrade, archive an existing project, or bind another checkout to the
-correct existing project.
+Working in another folder or on another project never requires signing in again.
+Authorization belongs to this computer, so `dongo link` points a new folder at a
+project using the credential already held. MCP remains an optional, separately
+approved project connection. On the free plan, creating a second active project
+requires choosing whether to upgrade, archive an existing project, or link to
+one that already exists.
 
 ## Repository layout
 
