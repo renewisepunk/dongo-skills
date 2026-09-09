@@ -25,9 +25,10 @@ a folder records which project it belongs to. Authorization is not per folder
 and not per project.
 
 ```
-dongo login              # once per computer. One browser approval, ever.
-dongo link <ref|url>     # point this folder at a project, like git remote add
-dongo status             # who am I, and what is this folder pointed at
+dongo login                    # once per computer. One browser approval, ever.
+dongo project create --name X  # create from here, like gh repo create
+dongo link <ref|url>           # point this folder at a project, like git remote add
+dongo status                   # who am I, and what is this folder pointed at
 ```
 
 ## Boundaries
@@ -95,8 +96,14 @@ Both name the same project. `link` opens no browser: it uses the authorization
 this computer already holds, and dongo refuses a project this account does not
 administer.
 
-If they have no project yet, have them create one in the dongo web app and copy
-the link, then `dongo link` it.
+If they have no project yet, create one from here — it needs no browser and
+points this folder at it:
+
+```
+dongo project create --name "A new idea"
+```
+
+Creating in the dongo web app and pasting the link with `dongo link` works too.
 
 The pointer it writes is two fields and holds no credential:
 
