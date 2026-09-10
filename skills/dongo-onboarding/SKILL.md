@@ -58,8 +58,10 @@ It keeps the authorization already signed in, so this never costs a browser
 trip. Running it when there is nothing to clean is a no-op, which is why it is
 safe to run every time.
 
-Install or update the CLI first if `dongo --version` is missing or older than
-the release named in the managed instructions. See
+`cleanup`, `login`, `link` and `status` need **@wisepunk/dongo 0.2.26 or newer**.
+Earlier versions do not have them, and 0.2.25 resolves `dongo link` against the
+surrounding repository rather than the project you named. Install or update
+first if `dongo --version` is missing or older. See
 [references/cli-install.md](references/cli-install.md).
 
 ## 2. Sign this computer in
