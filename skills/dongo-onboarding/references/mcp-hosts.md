@@ -30,10 +30,10 @@ they are not routine health checks.
 
 ## Codex
 
-When this computer is not signed in yet and Codex setup is also needed, prefer
-one owner approval with `dongo login --agent-host codex` before applying the
-integration. This combines only the consent screen: Codex still performs its own
-PKCE token exchange and owns a separate revocable credential.
+Sign this computer in with `dongo login` first when it is not signed in yet.
+Codex then performs its own PKCE login for the project server and owns a
+separate revocable credential; that is one consent inside Codex, not another
+dongo CLI approval.
 
 Preview and apply:
 

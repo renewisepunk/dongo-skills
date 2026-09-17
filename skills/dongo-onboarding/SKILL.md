@@ -22,10 +22,12 @@ Needs internet access, npm, and Node.js 20 or newer.
 
 dongo works like `git` and `gh`. You authorize yourself once on a computer, and
 a folder records which project it belongs to. Authorization is not per folder
-and not per project.
+and not per project. An MCP host such as Codex or Claude Code holds its own
+grant, so adding one later means one more sign-in inside that host, never
+another dongo CLI approval.
 
 ```
-dongo login                    # once per computer. One browser approval, ever.
+dongo login                    # once per computer. One dongo approval in the browser.
 dongo project create --name X  # create from here, like gh repo create
 dongo link <ref|url>           # point this folder at a project, like git remote add
 dongo status                   # who am I, and what is this folder pointed at
@@ -58,10 +60,11 @@ It keeps the authorization already signed in, so this never costs a browser
 trip. Running it when there is nothing to clean is a no-op, which is why it is
 safe to run every time.
 
-`cleanup`, `login`, `link` and `status` need **@wisepunk/dongo 0.2.26 or newer**.
-Earlier versions do not have them, and 0.2.25 resolves `dongo link` against the
-surrounding repository rather than the project you named. Install or update
-first if `dongo --version` is missing or older. See
+`cleanup`, `login`, `link` and `status` need **@wisepunk/dongo 0.2.26 or newer**,
+and `dongo integrate` in a folder set up by `login` and `link` needs
+**0.2.31 or newer**; earlier versions only recognise the old repository marker
+and answer "This repository is not connected". Install or update first if
+`dongo --version` is missing or older. See
 [references/cli-install.md](references/cli-install.md).
 
 ## 2. Sign this computer in
@@ -79,8 +82,11 @@ Otherwise:
 dongo login
 ```
 
-One browser approval. Show the person the link and the code, and wait. Running
-`dongo login` again when already signed in reports that and asks for nothing.
+One browser approval. Show the person the link and the code, and wait. On the
+approval page a person with no project yet names their first one, and a person
+with several picks the one this terminal starts on; `dongo link` can point any
+folder elsewhere later. Running `dongo login` again when already signed in
+reports that and asks for nothing.
 
 ## 3. Point this folder at a project
 
