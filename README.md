@@ -16,13 +16,11 @@ only when the requested task needs the CLI and it is not already available.
   layering. It never starts another browser approval when this computer is
   already signed in. Codex setup can combine CLI and host consent on one screen
   while keeping their credentials separate.
-- `dongo-workflow` teaches an agent how to triage Intake, claim and complete Work,
-  handle Attention, keep repository work attached to active Runs, and respect
-  dongo's concurrency and security rules, including the complete issue
-  lifecycle, bounded Attention waits, optional retained-update compatibility,
-  parent Work with direct subtasks, local-runner ownership, economical Run
-  updates, and safe host-native delegation for an owner-authorized batch of
-  independent issues.
+- `dongo-workflow` teaches an agent the dongo loop: start a session, claim an
+  item, record what changes, stop and ask only when a person must decide, and
+  finish with an outcome written for that person. It says how to write
+  Attention and updates so they read well on a phone, and it keeps parallel
+  work to one session per item with no coordinator ritual.
 
 Install both skill directories with your agent's normal Agent Skills installer.
 For example, ask your agent:
