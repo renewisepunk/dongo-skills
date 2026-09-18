@@ -65,8 +65,10 @@ something is in scope, ask in one line, do not build it.
    timer, and never a log dump.
 5. Finish when the requested change and its verification are complete.
 
-Do not abandon a claimed item or an active Run because the conversation moved
-on. If you must stop, say so in an update and leave the record true.
+When you stop, the record must say so. Finish the item, ask with Attention,
+or record that you stopped and why; never exit leaving a Run "executing" for
+the person to puzzle over. A sub-agent finishes its own item; it does not hand
+a branch back to a coordinator and leave the item running.
 
 An Intake needs no Work when it is an acknowledgement or already handled: mark
 it processed with a short explanation. Dismiss noise with a reason.
