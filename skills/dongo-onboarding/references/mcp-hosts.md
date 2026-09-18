@@ -30,10 +30,12 @@ they are not routine health checks.
 
 ## Codex
 
-Sign this computer in with `dongo login` first when it is not signed in yet.
-Codex then performs its own PKCE login for the project server and owns a
-separate revocable credential; that is one consent inside Codex, not another
-dongo CLI approval.
+When this computer is not signed in yet, prefer `dongo login --agent-host codex`
+(dongo 0.2.34 or newer): the one browser screen approves the CLI and Codex's
+project connection together. Codex still performs its own PKCE token exchange
+and owns a separate revocable credential, but `codex mcp login` then completes
+without a second dongo approval. When the computer is already signed in, run
+`codex mcp login` and approve Codex once when it asks.
 
 Preview and apply:
 

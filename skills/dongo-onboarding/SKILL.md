@@ -22,9 +22,9 @@ Needs internet access, npm, and Node.js 20 or newer.
 
 dongo works like `git` and `gh`. You authorize yourself once on a computer, and
 a folder records which project it belongs to. Authorization is not per folder
-and not per project. An MCP host such as Codex or Claude Code holds its own
-grant, so adding one later means one more sign-in inside that host, never
-another dongo CLI approval.
+and not per project. An MCP host holds its own grant: Codex's can be approved on
+the same screen as the CLI, and Claude Code asks once inside Claude Code; neither
+is another dongo CLI approval.
 
 ```
 dongo login                    # once per computer. One dongo approval in the browser.
@@ -79,7 +79,8 @@ one login per computer.
 Otherwise:
 
 ```
-dongo login
+dongo login                      # Claude Code or another host
+dongo login --agent-host codex   # Codex: approves its MCP connection on the same screen
 ```
 
 One browser approval. Show the person the link and the code, and wait. On the
@@ -87,6 +88,12 @@ approval page a person with no project yet names their first one, and a person
 with several picks the one this terminal starts on; `dongo link` can point any
 folder elsewhere later. Running `dongo login` again when already signed in
 reports that and asks for nothing.
+
+When the host is Codex, use `--agent-host codex` (needs dongo 0.2.34 or
+newer): the person approves the CLI and Codex's project connection together,
+and the later `codex mcp login` completes without a second dongo approval.
+Claude Code registers its own client, so it always asks once inside Claude
+Code; that is one consent, never another dongo CLI approval.
 
 ## 3. Point this folder at a project
 
