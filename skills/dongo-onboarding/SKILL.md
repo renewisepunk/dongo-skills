@@ -61,10 +61,10 @@ trip. Running it when there is nothing to clean is a no-op, which is why it is
 safe to run every time.
 
 `cleanup`, `login`, `link` and `status` need **@wisepunk/dongo 0.2.26 or newer**,
-and `dongo integrate` in a folder set up by `login` and `link` needs
-**0.2.31 or newer**; earlier versions only recognise the old repository marker
-and answer "This repository is not connected". Install or update first if
-`dongo --version` is missing or older. See
+and `dongo integrate` and `dongo runner install` in a checkout set up by
+`login` and `link` need **0.2.33 or newer**; earlier versions only recognise
+the old repository marker and answer "not connected" or "connected without a
+repository". Install or update first if `dongo --version` is missing or older. See
 [references/cli-install.md](references/cli-install.md).
 
 ## 2. Sign this computer in
