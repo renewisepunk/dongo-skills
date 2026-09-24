@@ -1,10 +1,10 @@
 ---
 name: dongo-onboarding
-description: This skill should be used when the user asks to "set up dongo", "connect this folder to dongo", "install the dongo CLI", "add the dongo MCP server", "authenticate dongo", or "repair the dongo connection". It signs this computer in once and points a folder at a dongo project.
+description: This skill should be used when the user asks to "set up dongo", "connect this folder to dongo", "install the dongo CLI", "add the dongo MCP server", "authenticate dongo", or "repair the dongo connection". It signs this computer in once and points a folder at a dongo project, reusing one that already exists before creating another.
 license: MIT
 metadata:
   author: dongo
-  version: "0.2.0"
+  version: "0.3.0"
 ---
 
 # dongo onboarding
@@ -20,6 +20,12 @@ Needs internet access, npm, and Node.js 20 or newer.
 
 ## The shape
 
+Nothing in dongo runs without two things: a **person** (the account this
+computer is signed in as) and a **project** (where the work lives). Every setup
+ends with both. The project can come from the person in the web app or from an
+agent with `dongo project create`; either is fine, as long as an agent looks at
+what already exists first and reuses it.
+
 dongo works like `git` and `gh`. You authorize yourself once on a computer, and
 a folder records which project it belongs to. Authorization is not per folder
 and not per project. An MCP host holds its own grant: Codex's can be approved on
@@ -28,8 +34,9 @@ is another dongo CLI approval.
 
 ```
 dongo login                    # once per computer. One dongo approval in the browser.
-dongo project create --name X  # create from here, like gh repo create
-dongo link <ref|url>           # point this folder at a project, like git remote add
+dongo project list             # the projects this account already has
+dongo link <ref|url>           # point this folder at one, like git remote add
+dongo project create --name X  # only when none fits, like gh repo create
 dongo status                   # who am I, and what is this folder pointed at
 ```
 
@@ -60,11 +67,13 @@ It keeps the authorization already signed in, so this never costs a browser
 trip. Running it when there is nothing to clean is a no-op, which is why it is
 safe to run every time.
 
-`cleanup`, `login`, `link` and `status` need **@wisepunk/dongo 0.2.26 or newer**,
-and `dongo integrate` and `dongo runner install` in a checkout set up by
-`login` and `link` need **0.2.33 or newer**; earlier versions only recognise
-the old repository marker and answer "not connected" or "connected without a
-repository". Install or update first if `dongo --version` is missing or older. See
+This skill expects **@wisepunk/dongo 0.2.64 or newer**: from that release
+`dongo project create` refuses a name the account already uses and names the
+project to link instead, and `dongo project list` marks this folder's project
+(`current`) and your role. Older releases still work for `cleanup`, `login`,
+`link` and `status` (0.2.26+) and `integrate` / `runner install` (0.2.33+), but
+cannot guard against a duplicate project. Install or update first if
+`dongo --version` is missing or older. See
 [references/cli-install.md](references/cli-install.md).
 
 ## 2. Sign this computer in
@@ -84,9 +93,11 @@ dongo login --agent-host codex   # Codex: approves its MCP connection on the sam
 ```
 
 One browser approval. Show the person the link and the code, and wait. On the
-approval page a person with no project yet names their first one, and a person
-with several picks the one this terminal starts on; `dongo link` can point any
-folder elsewhere later. Running `dongo login` again when already signed in
+approval page a person with no project yet names their first one — an account
+always ends up with a project, because nothing runs without one — and a person
+with projects picks the one this terminal starts on. Signing in from a folder
+also points that folder at the approved project, and the CLI says so; `dongo
+link` can point any folder elsewhere later. Running `dongo login` again when already signed in
 reports that and asks for nothing.
 
 When the host is Codex, use `--agent-host codex` (needs dongo 0.2.34 or
@@ -100,7 +111,16 @@ Code; that is one consent, never another dongo CLI approval.
 If `dongo status` already reports a `folder`, this folder is pointed and you are
 done with this step.
 
-Otherwise, take whichever the person has:
+Otherwise, look at what exists before anything else:
+
+```
+dongo project list --json
+```
+
+It lists every project the account can reach, archived ones marked, with
+`role` (owner or member) and `current` (this folder's project, if any). If one
+of them is plainly this folder's project — same name as the repository or the
+product, or the one the person names — point the folder at it:
 
 ```
 dongo link en8dgh2y-example                  # a project reference
@@ -111,12 +131,19 @@ Both name the same project. `link` opens no browser: it uses the authorization
 this computer already holds, and dongo refuses a project this account does not
 administer.
 
-If they have no project yet, create one from here — it needs no browser and
-points this folder at it:
+Create a project only when none fits. It needs no browser and points this
+folder at it:
 
 ```
 dongo project create --name "A new idea"
 ```
+
+If the account already has an active project with that name, dongo refuses
+(`project_exists`) and names it: link that one instead of choosing a new name to
+get past the check. When several projects could fit and nothing settles which,
+ask the person which project this folder belongs to — that is their decision,
+not a guess to make. The free plan allows one active project; if creating is
+refused for the allowance, say so and offer to link the existing one.
 
 Creating in the dongo web app and pasting the link with `dongo link` works too.
 
@@ -126,8 +153,11 @@ The pointer it writes is two fields and holds no credential:
 { "project": "en8dgh2y-example", "origin": "https://dongo.so" }
 ```
 
-Commit it if the folder is a repository. It is a pointer, like a Git remote, so
-sharing it grants nothing.
+Commit `.dongo` if the folder is a repository. It is a pointer, like a Git
+remote, so sharing it grants nothing, and everyone who clones the repository
+lands on the same project. Keep `.agent-work/` local and gitignored: it holds
+per-checkout state such as downloaded attachments, and dongo writes its own
+`.gitignore` there.
 
 ## 4. Configure the MCP host, when one is wanted
 

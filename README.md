@@ -11,7 +11,9 @@ only when the requested task needs the CLI and it is not already available.
 ## Included skills
 
 - `dongo-onboarding` signs this computer in once, points the current folder at a
-  dongo project, and optionally configures the agent's MCP host. It clears what
+  dongo project — reusing one the account already has before creating another,
+  since nothing runs without a person and a project — and optionally configures
+  the agent's MCP host. It clears what
   older versions left behind first, so running it again converges instead of
   layering. It never starts another browser approval when this computer is
   already signed in. Codex setup can combine CLI and host consent on one screen
