@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "set up dongo", "co
 license: MIT
 metadata:
   author: dongo
-  version: "0.3.0"
+  version: "0.3.1"
 ---
 
 # dongo onboarding
@@ -13,6 +13,10 @@ Bring this computer, and this folder, to a working dongo setup. Run it as many
 times as you like: it converges on the same state instead of layering on what is
 already there.
 
+Run it only when the person asks to use dongo for this project. dongo is
+opt-in: a project that has no `.dongo` file, dongo block or dongo MCP server
+has not chosen it, so never offer setup there unprompted.
+
 Perform the work yourself. Ask the person only for the single browser approval,
 or for a host permission the environment requires.
 
@@ -20,9 +24,9 @@ Needs internet access, npm, and Node.js 20 or newer.
 
 ## The shape
 
-Nothing in dongo runs without two things: a **person** (the account this
-computer is signed in as) and a **project** (where the work lives). Every setup
-ends with both. The project can come from the person in the web app or from an
+Once someone chooses dongo for a project, nothing in it runs without two
+things: a **person** (the account this computer is signed in as) and a
+**project** (where the work lives). Every setup ends with both. The project can come from the person in the web app or from an
 agent with `dongo project create`; either is fine, as long as an agent looks at
 what already exists first and reuses it.
 

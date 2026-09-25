@@ -24,6 +24,10 @@ only when the requested task needs the CLI and it is not already available.
   Attention and updates so they read well on a phone, and it keeps parallel
   work to one session per item with no coordinator ritual.
 
+dongo is opt-in per project: the skills act only in a project that uses dongo
+(a `.dongo` file, a dongo instructions block, or a dongo MCP server), and set
+it up only when the person asks. Everywhere else the agent works without it.
+
 Install both skill directories with your agent's normal Agent Skills installer.
 For example, ask your agent:
 

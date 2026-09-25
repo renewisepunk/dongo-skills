@@ -4,7 +4,7 @@ description: This skill should be used when the user asks to "check dongo", "pro
 license: MIT
 metadata:
   author: dongo
-  version: "0.3.0"
+  version: "0.3.1"
 ---
 
 # dongo workflow
@@ -12,6 +12,11 @@ metadata:
 dongo is where the person sees what their agents are doing, what is done, and
 what needs them. You do the work; dongo holds the record. Keep the record
 true, keep it short, and stop only when a person genuinely has to decide.
+
+dongo is opt-in, per project. This skill applies only in a project that uses
+it: a `.dongo` file at the repository root, a `dongo-managed` block in its
+`CLAUDE.md` or `AGENTS.md`, or a `dongo-…` server in `.mcp.json`. In any other
+project, do the work without dongo and do not suggest it.
 
 ## The shape
 
